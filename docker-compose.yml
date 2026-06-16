@@ -17,8 +17,15 @@ services:
       - ./php:/var/www/html
 
     depends_on:
-      - db_maulana
-      - minio_maulana
+
+      db_maulana:
+
+        condition: service_healthy
+
+
+      minio_maulana:
+
+        condition: service_started
 
 
     networks:
@@ -48,6 +55,23 @@ services:
       MYSQL_USER: maulana
 
       MYSQL_PASSWORD: 12345
+
+    healthcheck:
+
+     test:
+       [
+         "CMD",
+         "mysqladmin",
+         "ping",
+         "-h",
+         "localhost"
+       ]
+
+     interval: 10s
+
+     timeout: 5s
+
+     retries: 5
 
 
     volumes:
