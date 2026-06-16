@@ -1,0 +1,138 @@
+version: "3.8"
+
+services:
+
+
+  php_maulana:
+
+    build:
+      context: ./php
+
+    container_name: php_maulana
+
+    ports:
+      - "8080:80"
+
+    volumes:
+      - ./php:/var/www/html
+
+    depends_on:
+      - db_maulana
+      - minio_maulana
+
+
+    networks:
+
+      maulana_net:
+
+        ipv4_address: 192.168.83.10
+
+
+
+  db_maulana:
+
+
+    image: mysql:8
+
+
+    container_name: db_maulana
+
+
+    environment:
+
+
+      MYSQL_ROOT_PASSWORD: root
+
+      MYSQL_DATABASE: galeri
+
+      MYSQL_USER: maulana
+
+      MYSQL_PASSWORD: 12345
+
+
+    volumes:
+
+      - mysql_data:/var/lib/mysql
+
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+
+    networks:
+
+      maulana_net:
+
+        ipv4_address: 192.168.83.20
+
+
+
+  minio_maulana:
+
+
+    image: minio/minio
+
+
+    container_name: minio_maulana
+
+
+    command:
+
+      server /data --console-address ":9001"
+
+
+    ports:
+
+      - "9000:9000"
+
+      - "9001:9001"
+
+
+    environment:
+
+
+      MINIO_ROOT_USER: admin
+
+      MINIO_ROOT_PASSWORD: password123
+
+
+    volumes:
+
+      - minio_data:/data
+
+
+
+    networks:
+
+
+      maulana_net:
+
+
+        ipv4_address: 192.168.83.30
+
+
+
+
+volumes:
+
+ mysql_data:
+
+ minio_data:
+
+
+
+networks:
+
+
+ maulana_net:
+
+
+  driver: bridge
+
+
+  ipam:
+
+    config:
+
+
+      - subnet: 192.168.83.0/24
+
+        gateway: 192.168.83.1
