@@ -43,6 +43,9 @@ services:
 
 
     container_name: db_maulana
+    
+    ports:
+      - "3306:3306"
 
 
     environment:
