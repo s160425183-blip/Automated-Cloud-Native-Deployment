@@ -17,7 +17,7 @@ Aplikasi ini berjalan menggunakan 3 layanan utama dalam jaringan privat `192.168
 ## 🛠️ Persyaratan Sistem
 
 Sebelum menjalankan proyek, pastikan perangkat Anda sudah terinstal:
-* [Docker Desktop](https://docker.com) atau Docker Engine.
+* Docker Engine.
 * Docker Compose (v2.0+).
 
 ---
